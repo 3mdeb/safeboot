@@ -1,0 +1,783 @@
+
+
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Debian package to enable UEFI SecureBoot, enroll your own hardware backed platform key, sign the kernel and initrd, decrypt the disk with the TPM, and enable system integrity protection with dmverity">
+      
+      
+        <link rel="canonical" href="https://safeboot.dev/faq/">
+      
+      
+      <link rel="shortcut icon" href="../images/favicon.ico">
+      <meta name="generator" content="mkdocs-1.1, mkdocs-material-5.1.0">
+    
+<!--
+ fill in the opengraph meta tags, with defaults from the site config
+ or values in the yaml metadata for the specific page (summary and image).
+-->
+<meta property="og:title"
+      content="Frequently Asked Questions">
+<meta property="og:site_name" content="safeboot">
+<meta property="og:url" content="https://safeboot.dev/faq/">
+<meta property="og:description"
+	content="Debian package to enable UEFI SecureBoot, enroll your own hardware backed platform key, sign the kernel and initrd, decrypt the disk with the TPM, and enable system integrity protection with dmverity">
+<meta property="og:image"
+      content="https://safeboot.dev/images/logo.png">
+
+    
+      
+        <title>Frequently Asked Questions - safeboot</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.89dc9fe3.min.css">
+      
+      
+    
+    
+    
+       <!-- Load fonts from Google -->
+       
+         <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin />
+         <link rel="stylesheet" type="text/css"
+             href="https://fonts.googleapis.com/css?family=IBM+Plex+Serif:300,400,400i,700%7CIBM+Plex+Sans:500,600,700%7CIBM+Plex+Mono&display=fallback" />
+         <style>
+           body, input {
+             font-family: "IBM Plex Serif", "Helvetica Neue",
+               Helvetica, Arial, sans-serif;
+           }
+           pre, code, kbd {
+             font-family: "IBM Plex Mono", "Courier New",
+               Courier, monospace;
+           }
+	   h1, h2, h3, h4, h5, h6 {
+             font-family: "IBM Plex Sans", sans-serif;
+	     font-weight: 700 !important;
+           }
+         </style>
+       
+     
+    
+    
+      <link rel="stylesheet" href="../extra.css">
+    
+    
+      
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#frequently-asked-questions" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid" aria-label="Header">
+    <a href="https://safeboot.dev/" title="safeboot" class="md-header-nav__button md-logo" aria-label="safeboot">
+      
+  <img src="../images/logo.png" alt="logo">
+
+    </a>
+    <label class="md-header-nav__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3,6H21V8H3V6M3,11H21V13H3V11M3,16H21V18H3V16Z" /></svg>
+    </label>
+    <div class="md-header-nav__title" data-md-component="header-title">
+      
+        <div class="md-header-nav__ellipsis">
+          <span class="md-header-nav__topic md-ellipsis">
+            safeboot
+          </span>
+          <span class="md-header-nav__topic md-ellipsis">
+            
+              Frequently Asked Questions
+            
+          </span>
+        </div>
+      
+    </div>
+    
+      <label class="md-header-nav__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5,3A6.5,6.5 0 0,1 16,9.5C16,11.11 15.41,12.59 14.44,13.73L14.71,14H15.5L20.5,19L19,20.5L14,15.5V14.71L13.73,14.44C12.59,15.41 11.11,16 9.5,16A6.5,6.5 0 0,1 3,9.5A6.5,6.5 0 0,1 9.5,3M9.5,5C7,5 5,7 5,9.5C5,12 7,14 9.5,14C12,14 14,12 14,9.5C14,7 12,5 9.5,5Z" /></svg>
+      </label>
+      
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" data-md-state="active">
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5,3A6.5,6.5 0 0,1 16,9.5C16,11.11 15.41,12.59 14.44,13.73L14.71,14H15.5L20.5,19L19,20.5L14,15.5V14.71L13.73,14.44C12.59,15.41 11.11,16 9.5,16A6.5,6.5 0 0,1 3,9.5A6.5,6.5 0 0,1 9.5,3M9.5,5C7,5 5,7 5,9.5C5,12 7,14 9.5,14C12,14 14,12 14,9.5C14,7 12,5 9.5,5Z" /></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z" /></svg>
+      </label>
+      <button type="reset" class="md-search__icon md-icon" aria-label="Clear" data-md-component="search-reset" tabindex="-1">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z" /></svg>
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Type to start searching
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header-nav__source">
+        
+<a href="https://github.com/osresearch/safeboot/" title="Go to repository" class="md-source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05L244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+        
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="https://safeboot.dev/" title="safeboot" class="md-nav__button md-logo" aria-label="safeboot">
+      
+  <img src="../images/logo.png" alt="logo">
+
+    </a>
+    safeboot
+  </label>
+  
+    <div class="md-nav__source">
+      
+<a href="https://github.com/osresearch/safeboot/" title="Go to repository" class="md-source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05L244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href=".." title="Overview" class="md-nav__link">
+      Overview
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../install/" title="Installation" class="md-nav__link">
+      Installation
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+    
+      
+    
+    
+      <label class="md-nav__link md-nav__link--active" for="__toc">
+        Frequently Asked Questions
+        <span class="md-nav__icon md-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3,9H17V7H3V9M3,13H17V11H3V13M3,17H17V15H3V17M19,17H21V15H19V17M19,7V9H21V7H19M19,13H21V11H19V13Z" /></svg>
+        </span>
+      </label>
+    
+    <a href="./" title="Frequently Asked Questions" class="md-nav__link md-nav__link--active">
+      Frequently Asked Questions
+    </a>
+    
+      
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z" /></svg>
+      </span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#what-is-the-threat-model" class="md-nav__link">
+    What is the threat model?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-is-this-better-than-normal-uefi-secure-boot" class="md-nav__link">
+    How is this better than normal UEFI Secure Boot?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-does-safeboot-compare-to-coreboot" class="md-nav__link">
+    How does safeboot compare to coreboot?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#does-safeboot-work-with-amd-cpus" class="md-nav__link">
+    Does safeboot work with AMD cpus?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#why-does-the-tpm-unsealing-fail-often" class="md-nav__link">
+    Why does the TPM unsealing fail often?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-is-safeboots-sip-related-to-macos-sip" class="md-nav__link">
+    How is safeboot's SIP related to macOS SIP?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-do-i-write-to-the-root-filesystem" class="md-nav__link">
+    How do I write to the root filesystem?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-do-i-switch-to-a-new-signing-key" class="md-nav__link">
+    How do I switch to a new signing key?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-happens-if-i-lose-the-signing-key" class="md-nav__link">
+    What happens if I lose the signing key?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#is-it-possible-to-reset-the-uefi-or-bios-password" class="md-nav__link">
+    Is it possible to reset the UEFI or BIOS password?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#does-it-work-on-the-thinkpad-701c" class="md-nav__link">
+    Does it work on the Thinkpad 701c?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    ???
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+    
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../threats/" title="Threat Model" class="md-nav__link">
+      Threat Model
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../attestation/" title="Remote Attestation" class="md-nav__link">
+      Remote Attestation
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../chain-of-trust/" title="Chain of Trust" class="md-nav__link">
+      Chain of Trust
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../safeboot/" title="safeboot subcommands" class="md-nav__link">
+      safeboot subcommands
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../tpm2-attest/" title="tpm2-attest subcommands" class="md-nav__link">
+      tpm2-attest subcommands
+    </a>
+  </li>
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z" /></svg>
+      </span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#what-is-the-threat-model" class="md-nav__link">
+    What is the threat model?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-is-this-better-than-normal-uefi-secure-boot" class="md-nav__link">
+    How is this better than normal UEFI Secure Boot?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-does-safeboot-compare-to-coreboot" class="md-nav__link">
+    How does safeboot compare to coreboot?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#does-safeboot-work-with-amd-cpus" class="md-nav__link">
+    Does safeboot work with AMD cpus?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#why-does-the-tpm-unsealing-fail-often" class="md-nav__link">
+    Why does the TPM unsealing fail often?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-is-safeboots-sip-related-to-macos-sip" class="md-nav__link">
+    How is safeboot's SIP related to macOS SIP?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-do-i-write-to-the-root-filesystem" class="md-nav__link">
+    How do I write to the root filesystem?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-do-i-switch-to-a-new-signing-key" class="md-nav__link">
+    How do I switch to a new signing key?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-happens-if-i-lose-the-signing-key" class="md-nav__link">
+    What happens if I lose the signing key?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#is-it-possible-to-reset-the-uefi-or-bios-password" class="md-nav__link">
+    Is it possible to reset the UEFI or BIOS password?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#does-it-work-on-the-thinkpad-701c" class="md-nav__link">
+    Does it work on the Thinkpad 701c?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    ???
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                
+                  
+                
+                
+                <h1 id="frequently-asked-questions">Frequently Asked Questions</h1>
+<h2 id="what-is-the-threat-model">What is the threat model?</h2>
+<p><img alt="Your threat model is not my threat model, but your threat model is ok" src="https://live.staticflickr.com/5575/31437292510_99ffd0dd11_b.jpg" /></p>
+<p><code>safeboot</code> intends to protect the integrity of the boot process and
+runtime integrity of the system against adversaries with external physical
+access to the device, as well as limited internal physical access.
+The assumption is that the attacker can get code execution on the device
+as the user and as root, but does not have access to the signing keys
+or the disk encryption key. The goal is to prevent the attacker from
+exfiltrating data from the device or making persistent changes to the
+system configuration.</p>
+<p>More details are in <a href="../threats/">the threat model page</a>.</p>
+<h2 id="how-is-this-better-than-normal-uefi-secure-boot">How is this better than normal UEFI Secure Boot?</h2>
+<p><code>safeboot</code> is not a replacement for UEFI SecureBoot - the two work together to
+improve the security of the system. SecureBoot ensures that the boot firmware is
+measured into the TPM and validates the signatures on the Linux kernel and initrd,
+and <code>safeboot</code> adds additional integrity protections beyond that.</p>
+<p>The default UEFI Secure Boot configuration is sufficient for
+Microsoft's needs since they are the only signing authority for
+their runtime, while Linux computer owners frequently want to
+compile their own kernel or runtime.  The compromise solution
+developed by Linux distributions has Microsoft sign a
+<a href="https://mjg59.dreamwidth.org/19448.html">"shim" bootloader</a>
+that has its own key management.  Since most distributions have their
+keys enrolled in the shim, systems that have Secure Boot enabled
+will boot the distribution's ISOs, which might not be desirable since
+it potentially gives an adversary runtime access to unencrypted
+parts of the system.</p>
+<p>A larger problem is that by default only the Linux kernel is signed,
+not the command line parameters or initrd.  While the <code>grub</code> bootloader
+can enable a password to protect against casual changes to the kernel
+parameters, the <code>grub.cfg</code> configuration is not signed.   This means
+that potentially a local attacker can modify it on disk to launch the
+kernel with <code>init=/bin/sh</code> to drop into a shell, or an attacker with
+root access can add trojan'ed binaries to the initrd to gain persistence.
+By replacing the Platform Key and removing <code>grub</code>, only Linux kernel and
+initrd images signed by the computer owner will boot.</p>
+<p>Far more details on how <code>safeboot</code> extends UEFI SecureBoot are on
+<a href="../threats/">the threat model page</a>.</p>
+<h2 id="how-does-safeboot-compare-to-coreboot">How does <code>safeboot</code> compare to coreboot?</h2>
+<p><img alt="Installing coreboot requires so much flashing" src="../images/coreboot.jpg" /></p>
+<p><a href="https://coreboot.org">coreboot</a> is entirely free software and can
+provide far better control of the boot process, although it is not
+supported on as many modern platforms as UEFI SecureBoot and requires
+reprogramming the SPI flash on the device.  If you have a machine that
+supports both coreboot and Bootguard, then you're probably better off
+running it instead.  However, be prepared to spend quite a bit of quality
+time with your SPI flash programmer to get it working...</p>
+<p>Once coreboot or UEFI hand off to the Linux kernel, the TPM unsealing of
+the disk encryption key, the dmverity protections on the root filesystem
+and the lockdown patches work the same.</p>
+<h2 id="does-safeboot-work-with-amd-cpus">Does <code>safeboot</code> work with AMD cpus?</h2>
+<p><img alt="AMD PSP Inside" src="../images/amd.jpg" /></p>
+<p>It has only been tested on the Intel systems with Bootguard.
+The UEFI platform keys and the rest of the lock down <em>should</em>
+work with AMD, although AMD's hardware secured boot process hasn't
+been reviewed as extensively as Intel's ME and Bootguard.</p>
+<p>For an indepth analysis of the AMD Platform Support Processor (PSP)
+and SEV, <a href="https://media.ccc.de/v/36c3-10942-uncover_understand_own_-_regaining_control_over_your_amd_cpu">Buhren, Eichner and Werling's 35c3 presentation</a>
+is the most detailed look so far.</p>
+<h2 id="why-does-the-tpm-unsealing-fail-often">Why does the TPM unsealing fail often?</h2>
+<p><img alt="TPM with wires soldered to the pins" src="../images/tpm.jpg" /></p>
+<p>It's super fragile right now.  Need to reconsider which PCRs are included
+and what they mean.  Suggestions welcome!</p>
+<h2 id="how-is-safeboots-sip-related-to-macos-sip">How is safeboot's SIP related to macOS SIP?</h2>
+<p><img alt="dmverity merkle tree diagram" src="../images/dmverity.png" /></p>
+<p><code>safeboot</code>'s System Integrity Protection (SIP) is inspired by the
+<a href="https://support.apple.com/en-us/HT204899">read-only filesystems of macOS SIP</a>.
+Like macOS, writing to the protected filesystems requires rebooting
+with a special kernel command line parameter (in this case <code>tpm.mode=recovery</code>)
+to enable write access.
+Unlike macOS, safeboot SIP can not unseal the disk encryption keys
+automatically from the TPM since the boot mode is part of the PCR
+measurements, so knowledge of the disk recovery password is required.
+This prevents a local adversary who escalates to <code>root</code> from being able
+to disable SIP and reboot into a writable filesystem to try to gain
+persistence.</p>
+<p>safeboot's SIP is also inspired by the <a href="https://source.android.com/security/verifiedboot/dm-verity">Android Verified Boot</a>
+that protects Android's <code>/system</code> partition.  Like Android, <code>safeboot</code> SIP
+provides cryptographic protection against an adversary who gains
+write access to the filesystem since entire filesystem is protected
+by the <code>dmverity</code> merkle tree of hashes.  The root hash is signed by
+the system owner as part of exiting recovery mode, and this root
+hash is passed into the kernel on the command line.
+The kernel command line is part of the cryptographic chain of trust
+from the CPU boostrap through the Bootguard ACM, into the UEFI firmware,
+and all the way to the Linux kernel and initrd.</p>
+<p>This is potentially even stronger protection than macOS SIP since it
+provides protection even against an adversary with physical access,
+the root password and the disk recovery key.  They can't sign the root
+hash without the hardware token, and if they change the signing keys in
+the firmare, then the TPM will no longer unseal the disk encryption key.
+They could re-seal the key with the new PCRs from their fake platform
+key, but the system would then fail both the TPM TOTP local attestation
+as well as the <a href="../attestation/">remote attestation</a> when it tried to
+prove to an external system that it was in a trusted state.</p>
+<h2 id="how-do-i-write-to-the-root-filesystem">How do I write to the root filesystem?</h2>
+<p>With SIP enabled it is not possible to modify the root filesystem.
+You must reboot into recovery mode with <code>safeboot recovery-reboot</code>
+and decrypt the disk with the recovery password.  Once decrypted,
+you can run <code>safeboot remount</code> to unlock the raw device and remount
+it <code>rw</code>.  After making modifications, it is necessary to sign
+the new root hashes with <code>safeboot linux-sign</code>.</p>
+<h2 id="how-do-i-switch-to-a-new-signing-key">How do I switch to a new signing key?</h2>
+<p>There is probably a way to sign a new PK with the old PK, but I haven't
+figured it out...  Instead here are the steps:</p>
+<ul>
+<li>Put the UEFI SecureBoot firmware back in <code>Setup Mode</code></li>
+<li>Boot into the recovery kernel</li>
+<li><code>safeboot remount</code> to get write-access to the disk</li>
+<li><code>safeboot key-init</code> or <code>safeboot yubikey-init</code> to build a new key.
+Answer "<code>y</code>" to overwrite the existing one in <code>/etc/safeboot/cert.pem</code>.</li>
+<li><code>safeboot uefi-sign-keys</code> to upload it into the firmware</li>
+<li><code>safeboot recover-sign</code></li>
+<li><code>safeboot linux-sign</code>, which should re-generate the dmverity hashes</li>
+<li>Reboot into the normal kernel</li>
+<li><code>safeboot luks-seal</code> to measure the new PCRs and normal kernel into the TPM</li>
+</ul>
+<h2 id="what-happens-if-i-lose-the-signing-key">What happens if I lose the signing key?</h2>
+<p>The best solution is to authenticate with the supervisor password
+to the UEFI Setup, re-enter SecureBoot setup mode and clear the key
+database, then boot into recovery mode and follow the instructions
+for switching to a new signing key.  If you don't have the
+UEFI Supervisor password, well, then you're in trouble.</p>
+<h2 id="is-it-possible-to-reset-the-uefi-or-bios-password">Is it possible to reset the UEFI or BIOS password?</h2>
+<p><img alt="EC block diagram from Matrosov presentation" src="../images/ec.png" /></p>
+<p>On modern Thinkpads the UEFI password is in the EC, not in the
+SPI flash.  Lenovo does a mainboard swap to reset it; you could find
+a <a href="https://medium.com/@matrosov/breaking-through-another-side-bypassing-firmware-security-boundaries-85807d3fe604">EC bypass</a>(Matrosov 2019)
+or perhaps a <a href="https://pbx.sh/efitoctou/">Bootguard bypass</a>(Bosch &amp; Hudson, 2019)
+to get into Setup in that case.</p>
+<p><a href="https://www.blackhat.com/us-19/briefings/schedule/index.html#breaking-through-another-side-bypassing-firmware-security-boundaries-from-embedded-controller-15902">Matrosov's 2019 BlackHat Talk</a>
+is a deep dive into the Lenovo EC and why it is not as much of a protection boundary
+as some vendors think it is.</p>
+<h2 id="does-it-work-on-the-thinkpad-701c">Does it work on the Thinkpad 701c?</h2>
+<p><img alt="Butterfly keyboard animation" src="https://farm1.staticflickr.com/793/39371776450_a8b0cd4184_o_d.gif" /></p>
+<p>Unfortunately the wonderful <a href="https://trmm.net/Butterfly">butterfly keyboard Thinkpad</a>
+predates UEFI by a few years, so it does not have a very secure
+boot process.  The X1 Carbon is a much nicer replacement in nearly
+every way, other than missing the amazing sliding keyboard mechanism.</p>
+<h2 id="_1">???</h2>
+<p>Please <a href="https://github.com/osresearch/safeboot/issues">file an issue!</a>
+Or submit a pull-request!</p>
+                
+                  
+                    
+
+<hr>
+<div class="md-source-date">
+  <small>
+    
+      Last update: May 28, 2020
+    
+  </small>
+</div>
+                  
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid" aria-label="Footer">
+        
+          <a href="../install/" title="Installation" class="md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+            <div class="md-footer-nav__button md-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z" /></svg>
+            </div>
+            <div class="md-footer-nav__title">
+              <div class="md-ellipsis">
+                <span class="md-footer-nav__direction">
+                  Previous
+                </span>
+                Installation
+              </div>
+            </div>
+          </a>
+        
+        
+          <a href="../threats/" title="Threat Model" class="md-footer-nav__link md-footer-nav__link--next" rel="next">
+            <div class="md-footer-nav__title">
+              <div class="md-ellipsis">
+                <span class="md-footer-nav__direction">
+                  Next
+                </span>
+                Threat Model
+              </div>
+            </div>
+            <div class="md-footer-nav__button md-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4,11V13H16L10.5,18.5L11.92,19.92L19.84,12L11.92,4.08L10.5,5.5L16,11H4Z" /></svg>
+            </div>
+          </a>
+        
+      </nav>
+    </div>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+        Made with
+        <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+          Material for MkDocs
+        </a>
+      </div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    
+      <script src="../assets/javascripts/vendor.36cbf620.min.js"></script>
+      <script src="../assets/javascripts/bundle.00c583dd.min.js"></script><script id="__lang" type="application/json">{"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents"}</script>
+      
+      <script>
+        app = initialize({
+          base: "..",
+          features: [],
+          search: Object.assign({
+            worker: "../assets/javascripts/worker/search.7f7c8775.min.js"
+          }, typeof search !== "undefined" && search)
+        })
+      </script>
+      
+    
+  </body>
+</html>
