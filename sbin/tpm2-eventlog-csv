@@ -46,7 +46,7 @@ def entry2csv(entry):
 		return
 	digest = ''
 	parsed = ''
-	
+
 	for d in entry['Digests']:
 		if d['AlgorithmId'] == alg:
 			digest = d['Digest']
@@ -91,11 +91,17 @@ def entry2csv(entry):
 		parsed = "%d" % (entry['Event'])
 
 	else:
-		raise ValueError("Unknown event type: %s" % (evtype))
+		if entry['EventSize'] != 0:
+			s = unhexlify(entry['Event']).decode("utf-8")
+			print(s)
+			parsed = "'%s'" % s
+		else:
+			parsed = '(empty)'
+		#raise ValueError("Unknown event type: %s" % (evtype))
 
 	print(str(pcr) + "," + digest + "," + evtype + "," + parsed)
 
-for entry in data:
+for entry in data['events']:
 	try:
 		entry2csv(entry)
 	except:
