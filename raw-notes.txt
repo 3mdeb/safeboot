@@ -221,3 +221,21 @@ disk re-keying:
 * overlay root: https://gist.github.com/mutability/6cc944bde1cf4f61908e316befd42bc4
 
 
+----
+
+# DRTM attestation
+
+1. Build GRUB and LZ with trenchboot support
+2. Install them on the disk and setup grub.cfg
+3. Add the PCRs that should be checked to kernel commandline, for exmaple: `tpm.mode=linux tpm.pcrs=17,18`
+4. Edit /etc/safeboot/safeboot.conf and change the PCRs
+5. Execute `sudo safeboot luks-seal 17,18` to seal LUSK key to PCRs 17,18
+6. Reboot the machine
+7. Now that PCRs have their final values and everything works, repeat:
+`sudo safeboot luks-seal 17,18`
+8. Reboot the machine and see that disk is autoamtically decrypted
+9. Prepare a quote with `tpm-attest quote deadbeef 17,18 > quote.tgz`
+10. SCP the quote to the attestation server.
+11. Install safeboot on the attestation server and execute:
+`sudo /etc/safeboot/refresh-certs`
+12. Verify the quote `tpm-attest verify quote.tgz` (TODO: add the nonce and goo PCRs)
