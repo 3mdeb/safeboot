@@ -69,11 +69,11 @@ tpm2_flush_all()
 	# prevent "out of memory for object contexts" by
 	# flushing transient handles, as well as transient sessions
 	warn "tpm2: flushing resources"
-	tpm2 flushcontext \
+	tpm2_flushcontext \
 		--transient-object \
 	|| die "tpm2_flushcontext: unable to flush transient handles"
 
-	tpm2 flushcontext \
+	tpm2_flushcontext \
 		--loaded-session \
 	|| die "tpm2_flushcontext: unable to flush sessions"
 }
@@ -82,16 +82,16 @@ tpm2_secret_session()
 {
 	SESSION="${1:-$TPM/session.ctx}"
 
-	tpm2 flushcontext --loaded-session
+	tpm2_flushcontext --loaded-session
 
 	warn "tpm2: starting secret session $SESSION"
-	tpm2 startauthsession >&2 \
+	tpm2_startauthsession >&2 \
 		--session "$SESSION" \
 		--policy-session  \
 	|| die "tpm2_startauthsession: unable to start authenticated session"
 
 	# context is TPM_RH_ENDORSEMENT because why would you want names?
-	tpm2 policysecret >&2 \
+	tpm2_policysecret >&2 \
 		--session "$SESSION" \
 		--object-context "0x4000000b" \
 	|| die "tpm2_policysecret: unable to set context TPM_RH_ENDORSEMENT"
@@ -155,7 +155,7 @@ quote()
 	# and of course there is a random number that identifies it
 	# because why would you want useful names with tpm2-tools?
 	warn "tpm2: reading endorsement certificate"
-	tpm2 nvread -o "$TMP/ek.crt" 0x01c00002 \
+	tpm2_nvread -o "$TMP/ek.crt" 0x01c00002 \
 	|| die "tpm2_nvread: unable to read endorsement key cert"
 
 	openssl x509 >&2 \
@@ -169,7 +169,7 @@ quote()
 	# and for stupid tpm2-tools reasons it has to be in the
 	# non-standard TPM2B_PUBLIC format rather than a useful PEM file.
 	warn "tpm2: reading endorsement key"
-	tpm2 createek >&2 \
+	tpm2_createek >&2 \
 		--ek-context "$TMP/ek.ctx" \
 		--key-algorithm "rsa" \
 		--public "$TMP/ek.pub" \
@@ -195,7 +195,7 @@ quote()
 	tpm2_secret_session "$TMP/session.ctx"
 
 	warn "tpm2: creating ephemeral attestation key"
-	tpm2 create >&2 \
+	tpm2_create >&2 \
 		--parent-context "$TMP/ek.ctx" \
 		--parent-auth "session:$TMP/session.ctx" \
 		--key-algorithm "ecc:ecdsa:null" \
@@ -206,7 +206,7 @@ quote()
 
 	# have to start a new secret session to load the attestation key
 	tpm2_secret_session "$TMP/session.ctx"
-	tpm2 load >&2 \
+	tpm2_load >&2 \
 		--parent-context "$TMP/ek.ctx" \
 		--auth "session:$TMP/session.ctx" \
 		--key-context "ak.ctx" \
@@ -216,18 +216,18 @@ quote()
 
 	# read the public component so that the name can be
 	# computed with sha256
-	tpm2 readpublic >&2 \
+	tpm2_readpublic >&2 \
 		--object-context "ak.ctx" \
 		--output "$TMP/ak.pub" \
 		--format "tpmt" \
 	|| die "tpm2_readpublic: unable to display info"
 
-	tpm2 flushcontext --transient-object
+	tpm2_flushcontext --transient-object
 
 	# get a quote using this attestation key
 	tpm2_flush_all ""
 	warn "tpm2: generating quote"
-	tpm2 quote >&2 \
+	tpm2_quote >&2 \
 		--key-context "ak.ctx" \
 		--pcr-list "sha256:$QUOTE_PCRS" \
 		--qualification "$QUOTE_NONCE" \
@@ -237,15 +237,25 @@ quote()
 	|| die "tpm2_quote: unable to generate quote"
 
 	# Include the TPM event log if it exists
-	cp \
-		/sys/kernel/security/tpm0/binary_bios_measurements \
-		"$TMP/eventlog" \
-	|| die "eventlog: unable to copy"
+#	cp \
+#		/sys/kernel/security/tpm0/binary_bios_measurements \
+#		"$TMP/eventlog" \
+#	|| die "eventlog: unable to copy"
 
-	cp \
-		/sys/kernel/security/ima/ascii_runtime_measurements \
-		"$TMP/ima" \
-	|| die "ima: unable to copy"
+	modprobe cbmem-coreboot coreboot_table
+
+	for cbmem_id in /sys/bus/coreboot/drivers/cbmem/coreboot* ; do
+		drtm_id="$(cat $cbmem_id/cbmem_attributes/id)"
+		if [[ "$drtm_id" == "0x444c4f47" ]]; then
+			dd if="$cbmem_id/cbmem_attributes/data" of="$TMP/eventlog" bs=$((0x1d4)) count=1
+			break
+		fi
+	done
+
+#	cp \
+#		/sys/kernel/security/ima/ascii_runtime_measurements \
+#		"$TMP/ima" \
+#	|| die "ima: unable to copy"
 
 	tar \
 		-zcf "$TMP/quote.tgz" \
@@ -258,7 +268,6 @@ quote()
 		"quote.pcr" \
 		"quote.sig" \
 		"eventlog" \
-		"ima" \
 	|| die "$TMP/quote.tgz: Unable to create"
 
 	# ensure that this quote validates locally before
@@ -353,7 +362,7 @@ eventlog-verify()
 		quote-verify "$QUOTE_TAR"
 	fi
 
-	tpm2 eventlog "$TMP/eventlog" \
+	tpm2_eventlog "$TMP/eventlog" \
 	| tpm2-eventlog-csv \
 	>> "$TMP/eventlog.txt" \
 	2> "$TMP/eventlog.pcr" \
@@ -492,8 +501,8 @@ quote-verify()
 
 	unpack-quote "$QUOTE_TAR" \
 	|| die "$QUOTE_TAR: unable to unpack"
-	
-	tpm2 print \
+
+	tpm2_print \
 		-t "TPMS_ATTEST" \
 		"$TMP/quote.out" \
 	|| die "tpm2_print: unable to parse quote"
@@ -507,7 +516,7 @@ quote-verify()
 	# if `stclear` is not set, then an attacker might have
 	# a persistent version of this key and they could reboot into
 	# an untrusted state.
-	tpm2 print \
+	tpm2_print \
 		--type "TPMT_PUBLIC" \
 		"$TMP/ak.pub" \
 	> "$TMP/ak.pub.txt" \
@@ -522,7 +531,7 @@ quote-verify()
 	# is no longer necessary to cross check that ak.pem and ak.pub
 	# have the same ECC parameters
 
-	tpm2 checkquote \
+	tpm2_checkquote \
 		--qualification "$QUOTE_NONCE" \
 		--message "$TMP/quote.out" \
 		--signature "$TMP/quote.sig" \
@@ -578,7 +587,7 @@ seal()
 	AK_NAME="000b$(sha256 < "$TMP/ak.pub")"
 
 	warn "tpm2: making credential: $AK_NAME"
-	tpm2 makecredential \
+	tpm2_makecredential \
 		--tcti "none" \
 		--encryption-key "$TMP/ek.pub" \
 		--secret "$TMP/secret" \
@@ -621,7 +630,7 @@ unseal()
 
 	# recreate the endorsement key context since it doesn't change per call
 	tpm2_flush_all ""
-	tpm2 createek \
+	tpm2_createek \
 		--ek-context "$TMP/ek.ctx" \
 		--key-algorithm "rsa" \
 	|| die "tpm2_createek: unable to create EK context"
@@ -631,7 +640,7 @@ unseal()
 
 	tpm2_secret_session "$TMP/session.ctx"
 
-	tpm2 activatecredential \
+	tpm2_activatecredential \
 		--credentialedkey-context "$AK_CTX" \
 		--credentialkey-context "$TMP/ek.ctx" \
 		--credentialkey-auth "session:$TMP/session.ctx" \
