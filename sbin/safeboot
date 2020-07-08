@@ -566,12 +566,14 @@ luks-seal() {
 	pcr14=$(echo -n "${LINUX_TARGET}" | tpm2_trial_extend $PCR_DEFAULT)
 	warn "mode=${LINUX_TARGET} PCR$BOOTMODE_PCR=$pcr14"
 	echo -n "$pcr14" | hex2bin \
-		>> "$TMP/pcrs.bin"
+		> "$TMP/pcr14.bin"
+	cat "$TMP/pcrs.bin" >> "$TMP/pcr14.bin"
+	mv "$TMP/pcr14.bin" "$TMP/pcrs.bin"
 	xxd -g1 "$TMP/pcrs.bin"
 
 	tpm2 createpolicy \
 		--policy-pcr \
-		--pcr-list "sha256:$PCRS,$BOOTMODE_PCR" \
+		--pcr-list "sha256:$BOOTMODE_PCR,$PCRS" \
 		--pcr "$TMP/pcrs.bin" \
 		--policy "$TMP/policy.digest" \
 		>> /tmp/tpm.log \
